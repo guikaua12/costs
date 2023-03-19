@@ -1,0 +1,35 @@
+.navbar {
+    background-color: black;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar ul {
+    display: flex;
+    list-style: none;
+    height: 100%;
+}
+
+.navbar ul li {
+}
+
+.navbar ul li a {
+    padding: 15px;
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.navbar ul li a:hover {
+    background-color: #4748D9;
+}
+
+nav ul li a.active-navbar-button {
+    background-color: green;
+}
+
+nav ul li a.active-navbar-button:hover {
+    background-color: green;
+}

@@ -1,0 +1,13 @@
+.counterWrapper {
+    display: flex;
+    width: 200px;
+    height: 100px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: aqua;
+}
+
+.btn {
+    padding: 10px;
+}

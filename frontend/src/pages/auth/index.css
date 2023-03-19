@@ -1,0 +1,27 @@
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #111111;
+}
+
+.login-wrapper .a-wrapper {
+    margin: 15px 0 15px 0;
+}
+
+.login-wrapper .a-wrapper a {
+    text-decoration: none;
+    color: #444444;
+}
+
+.login-wrapper .a-wrapper .register-a {
+    color: #506EE3;
+    font-weight: bold;
+}
+
+.login-wrapper .a-wrapper .register-a::before {
+    content: " ";
+}
+

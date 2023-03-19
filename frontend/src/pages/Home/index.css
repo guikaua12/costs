@@ -1,0 +1,25 @@
+.home {
+    width: 300px;
+    height: 300px;
+}
+
+.home .expandable {
+    background-color: red;
+    cursor: pointer;
+    height: 50%;
+}
+
+.home .content {
+    background-color: lightgray;
+    height: 50%;
+    transition: all 500ms 0ms ease-out;
+    overflow: hidden;
+}
+
+.home.hidden {
+    height: 150px;
+}
+
+.home.hidden .content {
+    height: 0;
+}

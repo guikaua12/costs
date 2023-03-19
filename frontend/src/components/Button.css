@@ -1,0 +1,17 @@
+.button {
+    background-color: #314492;
+    border-radius: 30px;
+    outline: none;
+    border: none;
+    font-family: Roboto, Arial, sans-serif;
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: white;
+    cursor: pointer;
+}
+
+.button:disabled {
+    background-color: #212A51;
+    cursor: no-drop;
+    color: #858686;
+}
