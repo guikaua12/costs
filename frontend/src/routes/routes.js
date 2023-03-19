@@ -3,14 +3,11 @@ import {BrowserRouter, Navigate, Outlet, Route, Routes} from 'react-router-dom';
 import Page from '../components/Page';
 import Login from '../pages/auth/Login';
 import Register from '../pages/auth/Register';
-import Posts from '../components/Posts';
-import Counter from '../components/Counter';
 import Home from '../pages/Home';
 import {isLogged} from '../auth/auth';
 
 function PrivateRoute({condition, redirectRoute}) {
     return condition() ? <Outlet></Outlet> : <Navigate to={redirectRoute}></Navigate>;
-    // return children;
 }
 
 PrivateRoute.defaultProps = {

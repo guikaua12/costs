@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import {getErrors, Input} from '../../../components/Input';
+import {getErrors, Input} from '../../../components/Input/Input';
 import '../index.css';
-import Button from '../../../components/Button';
+import Button from '../../../components/Button/Button';
 import {FaEnvelope, FaLock, FaUserAlt} from 'react-icons/fa';
 import {Link} from 'react-router-dom';
 

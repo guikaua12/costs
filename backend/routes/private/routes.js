@@ -23,11 +23,8 @@ function validateToken(req, res, next) {
     // pego o token
     const token = authorization.split(' ')[1];
     try {
-        // dou um parse nele usando o jwt.verify
         const {_id} = parse(token);
-        // busco na db pelo id
         const user = UserModel.findById(_id);
-        // se n tiver na db, o token é inválido
         if(!user) {
             return res.status(403).json({
                 erro: true,

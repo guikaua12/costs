@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import './Input.css';
+import React, from 'react';
+import './index.css';
 import {FaExclamationTriangle} from 'react-icons/fa';
 
 const REQUIRED_CODE = 0;

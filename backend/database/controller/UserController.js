@@ -3,9 +3,11 @@ const mongoose = require('mongoose');
 const UserModel = require('../model/User');
 const {hash, match} = require('../util/password');
 const {generateJwt, parse} = require('../util/jwt');
+const userCache = require('../cache/userCache');
 
 const EMAIL_PATTERN = new RegExp('[^@ \\t\\r\\n]+@[^@ \\t\\r\\n]+\\.[^@ \\t\\r\\n]+');
 
+// public routes
 async function register(req, res) {
     const {email, password} = req.body;
 
@@ -81,6 +83,7 @@ async function login(req, res) {
     const user = await UserModel.findOne({
         email
     }).exec();
+    const _id = user._id.toString();
 
     if(!user) {
         return res.status(422).json({
@@ -96,43 +99,39 @@ async function login(req, res) {
         });
     }
 
-    const jwt = generateJwt({
-        _id: user._id
-    });
+    let token = '';
 
-    res.status(200).json({
-        erro: false,
-        token: jwt
-    });
-}
+    try {
+        if(userCache.has(_id)) {
+            token = userCache.get(_id).token;
 
-async function get(req, res) {
-    const {id} = req.body;
+            return res.status(200).json({
+                erro: false,
+                token
+            });
+        }
 
-    if(!id) {
-        return res.status(422).json({
+        token = generateJwt({
+            _id,
+            email
+        });
+
+        userCache.set(_id, {_id, email, token});
+
+        res.status(200).json({
+            erro: false,
+            token
+        });
+    }catch(err) {
+        console.log(err);
+        res.status(500).json({
             erro: true,
-            msg: 'Especifique um id!'
+            msg: 'Ocorreu um erro interno.'
         });
     }
-
-
-    const user = await UserModel.findById(id, '-password').exec();
-
-    if(!user) {
-        return res.status(404).json({
-            erro: true,
-            msg: 'Id inexistente.'
-        });
-    }
-
-    res.status(200).json({
-        erro: false,
-        msg: 'Usuário consultado com sucesso.',
-        user
-    });
-
 }
+
+// private routes
 
 async function emailExists(email) {
     return !!(await UserModel.findOne({email}).exec());
@@ -140,6 +139,5 @@ async function emailExists(email) {
 module.exports = {
     register,
     login,
-    get,
     emailExists
 }
