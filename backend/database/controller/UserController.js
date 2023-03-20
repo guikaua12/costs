@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const UserModel = require('../model/User');
+const UserModel = require('../model/UserModel');
 const {hash, match} = require('../util/password');
 const {generateJwt, parse} = require('../util/jwt');
 const userCache = require('../cache/userCache');

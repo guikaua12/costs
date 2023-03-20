@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
-const User = mongoose.model('User', {
+const UserModel = mongoose.model('User', {
     email: {type: String, unique: true},
     password: String
 });
 
-module.exports = User;
+module.exports = UserModel;

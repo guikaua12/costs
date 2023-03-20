@@ -2,14 +2,15 @@ const express = require('express');
 const router = require('express').Router();
 
 const UserController = require('../../database/controller/UserController');
+const ProjectController = require('../../database/controller/ProjectController');
 const {parse} = require('../../database/util/jwt');
 const {JsonWebTokenError} = require("jsonwebtoken");
-
-const UserModel = require('../../database/model/User');
+const UserModel = require('../../database/model/UserModel');
 
 router.use(express.json());
 
-router.post('/users', validateToken, UserController.get);
+router.post('/projects/new', ProjectController.create);
+router.get('/projects/all', ProjectController.getAll);
 
 function validateToken(req, res, next) {
     const { authorization } = req.headers;
