@@ -61,9 +61,10 @@ async function create(req, res) {
     }
 }
 
-async function getAll(req, res) {
+async function getAllByToken(req, res) {
     try {
-        const projects = await ProjectModel.find();
+        const user = parse(getToken(req));
+        const projects = await ProjectModel.find({owner: user._id});
 
         res.status(200).json({
             erro: false,
@@ -80,5 +81,5 @@ async function getAll(req, res) {
 
 module.exports = {
     create,
-    getAll
+    getAllByToken
 }
