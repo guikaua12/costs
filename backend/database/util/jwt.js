@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const UserModel = require('../model/UserModel');
+const userCache = require('../cache/userCache');
 
 function generateJwt(data) {
     return jwt.sign(data, process.env.JWT_SECRET, {expiresIn: 300});
@@ -13,24 +14,20 @@ function getToken(req) {
     return req.headers.authorization.split(' ')[1];
 }
 
-// function isValidToken(token) {
-//     try {
-//         // dou um parse nele usando o jwt.verify
-//         const {_id} = parse(token);
-//         if(!_id) return false;
-//
-//         // busco na db pelo id
-//         // const user = UserModel.findById(_id);
-//         // if(!user) {
-//         //     return false;
-//         // }
-//     }catch(err) {
-//         return false;
-//     }
-// }
+function isValidToken(token) {
+    try {
+        const {_id} = parse(token);
+        if(!_id) return false;
+
+        return userCache.has(_id);
+    }catch(err) {
+        return false;
+    }
+}
 
 module.exports = {
     generateJwt,
     parse,
-    getToken
+    getToken,
+    isValidToken
 }
