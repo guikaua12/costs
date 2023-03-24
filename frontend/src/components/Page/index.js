@@ -1,38 +1,26 @@
 import React from 'react';
-import Navbar from '../../layout/Navbar/Navbar';
+import './index.css';
+import Footer from '../../layout/Footer';
+import Container from '../../layout/Container';
+import Header from '../../layout/Header';
 
-function Page(props) {
-    const navButtons = {
-        'home': {
-            name: 'home',
-            displayName: 'Home',
-            route: '/'
-        },
-        'contador': {
-            name: 'contador',
-            displayName: 'Contador',
-            route: '/counter'
-        },
-        'posts': {
-            name: 'posts',
-            displayName: 'Posts',
-            route: '/posts'
-        },
-        'login': {
-            name: 'login',
-            displayName: 'Login',
-            route: '/login'
-        }
-    };
-
+function Page({children, title, containerProps, currentPage}) {
     return (
-        <div>
-            <Navbar buttons={navButtons} defaultBtn="contador"></Navbar>
-            <div className="counterWrapper2">
-                {props.component}
-            </div>
-        </div>
+        <>
+            <Header currentPage={currentPage}></Header>
+            <Container containerProps={containerProps}>
+                {
+                    title && <h1 className='page-title'>{title}</h1>
+                }
+                {children}
+            </Container>
+            <Footer></Footer>
+        </>
     );
+}
+
+Page.defaultProps = {
+    containerProps: {}
 }
 
 export default Page;

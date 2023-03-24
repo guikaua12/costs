@@ -1,12 +1,9 @@
 import React from 'react';
 import './index.css';
 
-function Button({text, width, height, fullSized, disabled, onClick}) {
+function Button({children, ...rest}) {
     return (
-        <button disabled={disabled} className="button" style={{
-            width: fullSized ? '100%' : width,
-            height
-        }} onClick={onClick}>{text}</button>
+        <button className="button" {...rest}>{children}</button>
     );
 }
 

@@ -1,42 +1,61 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {BrowserRouter, Navigate, Outlet, Route, Routes} from 'react-router-dom';
-import Page from '../components/Page';
 import Login from '../pages/auth/Login';
 import Register from '../pages/auth/Register';
 import Home from '../pages/Home';
-import {isLogged} from '../auth/auth';
+import Empresa from '../pages/Empresa';
+import Contato from '../pages/Contato';
+import NewProject from '../pages/NewProject';
+import useAuth from '../auth/useAuth';
+import Projetos from '../pages/Projetos';
+import ViewProject from '../pages/ViewProject';
 
 function PrivateRoute({condition, redirectRoute}) {
-    return condition() ? <Outlet></Outlet> : <Navigate to={redirectRoute}></Navigate>;
+    const auth = useAuth();
+    if(auth.loading) return null;
+    return (
+        condition ? <Outlet></Outlet> : <Navigate to={redirectRoute}></Navigate>
+    )
 }
 
 PrivateRoute.defaultProps = {
-    condition: isLogged,
     redirectRoute: '/login'
 };
 
 function Router() {
+    const auth = useAuth();
+
     return (
         <BrowserRouter>
             <Routes>
-                <Route exact path="/" element={<PrivateRoute></PrivateRoute>}>
-                    <Route exact path="/" element={<Page component={<Home></Home>}></Page>}></Route>
+                <Route exact path="/" element={<PrivateRoute condition={auth.isLogged}></PrivateRoute>}>
+                    <Route exact path="/" element={<Home></Home>}></Route>
                 </Route>
-                <Route exact path="/counter" element={<PrivateRoute></PrivateRoute>}>
-                    <Route exact path="/counter" element={<Page component={<Counter></Counter>}></Page>}/>
+                <Route exact path="/projects" element={<PrivateRoute condition={auth.isLogged}></PrivateRoute>}>
+                    <Route exact path="/projects" element={<Projetos></Projetos>}></Route>
                 </Route>
-                <Route exact path="/posts" element={<PrivateRoute></PrivateRoute>}>
-                    <Route exact path="/posts" element={<Page component={<Posts></Posts>}></Page>}/>
+                <Route exact path="/empresa" element={<PrivateRoute condition={auth.isLogged}></PrivateRoute>}>
+                    <Route exact path="/empresa" element={<Empresa></Empresa>}></Route>
                 </Route>
+                <Route exact path="/contato" element={<PrivateRoute condition={auth.isLogged}></PrivateRoute>}>
+                    <Route exact path="/contato" element={<Contato></Contato>}></Route>
+                </Route>
+                <Route exact path="/newproject" element={<PrivateRoute condition={auth.isLogged}></PrivateRoute>}>
+                    <Route exact path="/newproject" element={<NewProject></NewProject>}></Route>
+                </Route>
+                <Route exact path="/project/:id" element={<PrivateRoute condition={auth.isLogged}></PrivateRoute>}>
+                    <Route exact path="/project/:id" element={<ViewProject></ViewProject>}></Route>
+                </Route>
+
 
                 {/*login*/}
                 <Route exact path="/login"
-                       element={<PrivateRoute condition={() => !isLogged()} redirectRoute="/"></PrivateRoute>}>
+                       element={<PrivateRoute condition={!auth.isLogged} redirectRoute="/"></PrivateRoute>}>
                     <Route exact path="/login" element={<Login></Login>}/>
                 </Route>
                 {/*register*/}
                 <Route exact path="/register"
-                       element={<PrivateRoute condition={() => !isLogged()} redirectRoute="/"></PrivateRoute>}>
+                       element={<PrivateRoute condition={!auth.isLogged} redirectRoute="/"></PrivateRoute>}>
                     <Route exact path="/register" element={<Register></Register>}/>
                 </Route>
             </Routes>

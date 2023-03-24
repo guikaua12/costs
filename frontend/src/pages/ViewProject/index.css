@@ -1,0 +1,45 @@
+/* View Project */
+.project-container {
+    /*display: flex;*/
+    height: 100%;
+    margin: 20px;
+
+    /*background-color: #DBBB33;*/
+}
+
+.project-container .wrapper1 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.project-container .project-form {
+    margin: 20px 0 25px 0;
+}
+
+.project-container h1.project-name {
+    font-size: 20px;
+    color: #FFBB33;
+    padding: 10px;
+    background-color: #222222;
+}
+
+.project-container .add-service-container {
+    /*width: 100%;*/
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    padding: 25px 0 25px 0;
+}
+
+
+/* ProjectInfo */
+.project-info-container {
+    margin: 20px 0 25px 0;
+}
+
+.project-info-container .project-info {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+

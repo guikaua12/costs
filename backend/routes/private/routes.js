@@ -1,16 +1,16 @@
 const express = require('express');
 const router = require('express').Router();
-
-const UserController = require('../../database/controller/UserController');
 const ProjectController = require('../../database/controller/ProjectController');
 const {parse, isValidToken} = require('../../database/util/jwt');
-const {JsonWebTokenError} = require("jsonwebtoken");
-const UserModel = require('../../database/model/UserModel');
 
 router.use(express.json());
 
 router.post('/projects/new', validateToken, ProjectController.create);
 router.get('/projects/all', validateToken, ProjectController.getAllByToken);
+router.get('/projects/categories', validateToken, ProjectController.getAllCategories);
+router.get('/projects/:id', validateToken, ProjectController.getOne);
+router.patch('/projects/:id', validateToken, ProjectController.updateOne);
+router.get('/auth/validatetoken', validateToken, (req, res) => res.status(200).json({erro: false}));
 
 
 // use as middleware
@@ -30,6 +30,8 @@ function validateToken(req, res, next) {
                 msg: 'Não autorizado.'
             });
         }
+        req.token = token;
+        req.user = parse(token);
         next();
     }catch(err) {
         console.log(err);

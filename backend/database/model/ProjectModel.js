@@ -4,9 +4,7 @@ const ProjectModel = mongoose.model('Project', {
     owner: String,
     name: String,
     budget: Number,
-    category: {
-        id: Number
-    },
+    category: Number,
     services: Object
 });
 

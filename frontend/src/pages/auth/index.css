@@ -4,24 +4,52 @@
     align-items: center;
     flex-direction: column;
     min-height: 100vh;
-    background-color: #111111;
 }
 
-.login-wrapper .a-wrapper {
-    margin: 15px 0 15px 0;
+.login-wrapper > * {
+    margin-bottom: 50px;
 }
 
-.login-wrapper .a-wrapper a {
-    text-decoration: none;
+.login-wrapper form.login-form {
+    display: flex;
+    flex-direction: column;
+    width: 350px;
+    padding: 50px;
+    background-color: #b6b6b6;
     color: #444444;
 }
 
-.login-wrapper .a-wrapper .register-a {
+.login-wrapper form.login-form > * {
+    margin-bottom: 15px;
+}
+
+.login-wrapper form.login-form .alert {
+    padding: 10px;
+    display: none;
+}
+
+.login-wrapper form.login-form .alert.error {
+    display: block;
+    background-color: #F8D7DA;
+    color: #842053;
+}
+
+.login-wrapper form.login-form .alert.success {
+    display: block;
+    background-color: #D1E7DD;
+    color: #52704A;
+}
+
+.login-wrapper form.login-form .a-wrapper {
+    margin: 15px 0 0 0;
+}
+
+.login-wrapper form.login-form .a-wrapper .register-a {
     color: #506EE3;
     font-weight: bold;
+    text-decoration: none;
 }
 
-.login-wrapper .a-wrapper .register-a::before {
+.login-wrapper form.login-form .a-wrapper .register-a::before {
     content: " ";
 }
-

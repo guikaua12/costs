@@ -1,0 +1,18 @@
+.action-button {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    font-family: Roboto, Arial, sans-serif;
+    font-size: 1rem;
+    color: black;
+    cursor: pointer;
+    padding: 10px;
+    border: 1px solid black;
+    outline: none;
+    text-decoration: none;
+}
+
+.action-button:hover {
+    color: #DBBB33;
+    background-color: black;
+}

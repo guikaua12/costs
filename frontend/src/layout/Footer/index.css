@@ -1,0 +1,27 @@
+.footer {
+    background-color: #222222;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer ul {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    height: 100%;
+}
+
+.footer ul li {
+    margin-right: 10px;
+}
+
+.footer ul li svg.social-icon {
+    color: white;
+    cursor: pointer;
+}
+
+.footer ul li svg.social-icon:hover {
+    color: #DBBB33;
+}

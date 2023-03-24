@@ -1,13 +1,16 @@
 .button {
-    background-color: #314492;
-    border-radius: 30px;
-    outline: none;
-    border: none;
+    background-color: #222222;
     font-family: Roboto, Arial, sans-serif;
-    font-weight: bold;
-    font-size: 1.1rem;
+    font-size: 1rem;
     color: white;
     cursor: pointer;
+    padding: 10px;
+    border: none;
+    outline: none;
+}
+
+.button:hover {
+    color: #DBBB33;
 }
 
 .button:disabled {

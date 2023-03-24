@@ -3,7 +3,7 @@ const UserModel = require('../model/UserModel');
 const userCache = require('../cache/userCache');
 
 function generateJwt(data) {
-    return jwt.sign(data, process.env.JWT_SECRET, {expiresIn: 300});
+    return jwt.sign(data, process.env.JWT_SECRET, {expiresIn: 1800});
 }
 
 function parse(token) {

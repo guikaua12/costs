@@ -49,11 +49,20 @@ async function register(req, res) {
             email,
             password: hashedPassword
         });
+        const _id = user._id.toString();
 
         await user.save();
+
+        const token = generateJwt({
+            _id,
+            email
+        });
+        userCache.set(_id, {_id, email, token});
+
         res.status(200).json({
             erro: false,
-            msg: "Cadastro realizado com sucesso."
+            msg: 'Cadastro realizado com sucesso.',
+            token
         });
     }catch(err) {
         console.log(err);
@@ -83,7 +92,6 @@ async function login(req, res) {
     const user = await UserModel.findOne({
         email
     }).exec();
-    const _id = user._id.toString();
 
     if(!user) {
         return res.status(422).json({
@@ -93,11 +101,14 @@ async function login(req, res) {
     }
 
     if(!await match(password, user.password)) {
+
         return res.status(422).json({
             erro: true,
             msg: 'Email ou senha incorretos.'
         });
     }
+
+    const _id = user._id.toString();
 
     let token = '';
 
@@ -107,6 +118,7 @@ async function login(req, res) {
 
             return res.status(200).json({
                 erro: false,
+                msg: 'Login realizado com sucesso.',
                 token
             });
         }
@@ -120,6 +132,7 @@ async function login(req, res) {
 
         res.status(200).json({
             erro: false,
+            msg: 'Login realizado com sucesso.',
             token
         });
     }catch(err) {

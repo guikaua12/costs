@@ -1,0 +1,36 @@
+.content-container {
+    display: flex;
+    max-width: 1000px;
+    margin: 25px auto;
+    min-height: 80vh;
+
+    /*background-color: #506EE3;*/
+}
+
+.content-container.flex {
+    display: flex;
+}
+
+.content-container.block {
+    display: block;
+}
+
+.content-container.flex-dir-col {
+    flex-direction: column;
+}
+
+.content-container.flex-dir-row {
+    flex-direction: row;
+}
+
+.content-container.align-center {
+    align-items: center;
+}
+
+.content-container.justify-center {
+    justify-content: center;
+}
+
+.content-container.margin-bottom > * {
+    margin-bottom: 25px;
+}

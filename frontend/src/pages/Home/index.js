@@ -1,24 +1,18 @@
-import React, {useState} from 'react';
+import React from 'react';
 import './index.css';
-
+import Page from '../../components/Page';
+import LinkButton from '../../components/LinkButton';
+import savingsImg from '../../static/savings.svg';
 function Home() {
-    const [visible, setVisible] = useState(false);
-
     return (
-        <div>
-            <div className={visible ? 'home' : 'home hidden'}>
-                <div className='expandable' onClick={() => setVisible(!visible)}></div>
-                <div className='content'>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto dicta ducimus fuga ipsam ipsum nobis pariatur placeat voluptatum. Aut deleniti eaque eligendi eos facere incidunt molestias non quaerat ratione sit.</p>
-                </div>
+        <Page containerProps={{className: 'align-center justify-center'}} currentPage='home'>
+            <div className='home-container'>
+                <h1>Bem-vindo ao <span style={{backgroundColor: '#222222', color: '#FFBB33', padding: '5px'}}>Costs</span></h1>
+                <p>Comece a gerenciar os seus projetos agora mesmo!</p>
+                <LinkButton to='/newproject'>Criar projeto</LinkButton>
+                <img src={savingsImg} alt='Savings' width='350px'/>
             </div>
-            <div className={visible ? 'home' : 'home hidden'}>
-                <div className='expandable' onClick={() => setVisible(!visible)}></div>
-                <div className={'content'}>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto dicta ducimus fuga ipsam ipsum nobis pariatur placeat voluptatum. Aut deleniti eaque eligendi eos facere incidunt molestias non quaerat ratione sit.</p>
-                </div>
-            </div>
-        </div>
+        </Page>
     );
 }
 

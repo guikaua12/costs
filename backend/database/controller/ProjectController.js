@@ -2,24 +2,25 @@ const mongoose = require('mongoose');
 const ProjectModel = require('../model/ProjectModel');
 const {parse, getToken} = require('../util/jwt');
 
-const categories = {
-    '1': {
+const categories = [
+    {
         "id": 1,
         "name": "Infra"
     },
-    '2': {
+    {
         "id": 2,
         "name": "Desenvolvimento"
     },
-    '3': {
+    {
         "id": 3,
         "name": "Design"
     },
-    '4': {
+    {
         "id": 4,
         "name": "Planejamento"
     }
-}
+]
+
 
 async function create(req, res) {
     const {name, budget, category} = req.body;
@@ -64,7 +65,13 @@ async function create(req, res) {
 async function getAllByToken(req, res) {
     try {
         const user = parse(getToken(req));
-        const projects = await ProjectModel.find({owner: user._id});
+        let projects = await ProjectModel.find({owner: user._id});
+        projects = projects.map(project => {
+            return {
+                ...project.toObject(),
+                category: categories.find(cat => cat.id === project.category)
+            };
+        });
 
         res.status(200).json({
             erro: false,
@@ -79,7 +86,103 @@ async function getAllByToken(req, res) {
     }
 }
 
+async function getOne(req, res) {
+    const {id} = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(422).json({
+            erro: true,
+            msg: 'O id é inválido.'
+        });
+    }
+
+    try {
+        const user = parse(getToken(req));
+        let project = await ProjectModel.findById(id).where({owner: user._id});
+        if(!project) {
+            return res.status(404).json({
+                erro: true,
+                msg: 'Projeto não encontrado.'
+            });
+        }
+        project = {
+            ...project.toObject(),
+            category: categories.find(cat => cat.id === project.category)
+        };
+
+        res.status(200).json({
+            erro: false,
+            project
+        });
+    }catch(err) {
+        console.log(err);
+        res.status(500).json({
+            erro: true,
+            msg: 'Ocorreu um erro interno.'
+        });
+    }
+}
+
+async function getAllCategories(req, res) {
+    try {
+        res.status(200).json({
+            erro: false,
+            categories
+        });
+    }catch(err) {
+        console.log(err);
+        res.status(500).json({
+            erro: true,
+            msg: 'Ocorreu um erro interno.'
+        });
+    }
+}
+
+async function updateOne(req, res) {
+    const {id} = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(422).json({
+            erro: true,
+            msg: 'O id é inválido.'
+        });
+    }
+
+    const {name, budget, category} = req.body;
+    if(!name || !budget || !category) {
+        return res.status(422).json({
+            erro: true,
+            msg: 'O nome, budget e category não podem ser vazios.'
+        });
+    }
+    if(typeof name !== 'string' || typeof budget !== 'number' || typeof category !== 'number') {
+        return res.status(422).json({
+            erro: true,
+            msg: 'O nome, budget ou category são inválidos.'
+        });
+    }
+
+
+
+    try {
+        const project = await ProjectModel.findByIdAndUpdate(id, {name, budget, category}).where({owner: req.user._id});
+        if(!project) {
+            return res.status(404).json({
+                erro: true,
+                msg: 'Projeto não encontrado.'
+            });
+        }
+    }catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            erro: true,
+            msg: 'Ocorreu um erro interno.'
+        });
+    }
+}
+
 module.exports = {
     create,
-    getAllByToken
+    getAllByToken,
+    getAllCategories,
+    getOne,
+    updateOne
 }
