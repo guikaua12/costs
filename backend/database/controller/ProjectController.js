@@ -161,7 +161,6 @@ async function updateOne(req, res) {
     }
 
 
-
     try {
         const project = await ProjectModel.findByIdAndUpdate(id, {name, budget, category}).where({owner: req.user._id});
         if(!project) {
@@ -170,6 +169,10 @@ async function updateOne(req, res) {
                 msg: 'Projeto não encontrado.'
             });
         }
+        return res.status(200).json({
+            erro: false,
+            msg: 'Projeto atualizado com sucesso.'
+        });
     }catch (err) {
         console.log(err);
         return res.status(500).json({
