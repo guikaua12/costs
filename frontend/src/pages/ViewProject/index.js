@@ -6,14 +6,14 @@ import {useParams} from 'react-router-dom';
 import Button from '../../components/Button';
 import ProjectForm from '../../components/ProjectForm';
 
-function ProjectInfo({category, budget}) {
+function ProjectInfo({projectData}) {
     return (
         <div className="project-info-container">
             <div>
-                <span className='project-info'>Categoria: </span><span>{category}</span>
+                <span className='project-info'>Categoria: </span><span>{projectData.category && projectData.category.name}</span>
             </div>
             <div>
-                <span className='project-info'>Total do orçamento: </span><span>R${budget}</span>
+                <span className='project-info'>Total do orçamento: </span><span>R${projectData.budget}</span>
             </div>
             <div>
                 <span className='project-info'>Total utilizado: </span><span>N/A</span>
@@ -52,7 +52,21 @@ function ViewProject() {
     }, []);
 
     function updateProject(project) {
+        const headers = {
+            'Content-Type': 'application/json',
+            authorization: `Bearer ${auth.getToken()}`
+        };
+        const body = {
+            name: project.name,
+            budget: Number(project.budget),
+            category: Number(project.category.id)
+        };
 
+        return fetch(`/projects/${id}`, {
+            method: 'PATCH',
+            headers,
+            body: JSON.stringify(body)
+        });
     }
 
     function addService(project) {
@@ -62,6 +76,13 @@ function ViewProject() {
 
     function handleEditSubmit(project) {
         setIsEditing(false);
+        updateProject(project)
+            .then(response => response.json())
+            .then(data => {
+                if(data.erro) return;
+                setProject(project)
+            });
+
         // exibir mensagem
     }
 
@@ -82,7 +103,7 @@ function ViewProject() {
                 {
                     isEditing ?
                         <ProjectForm projectData={project} submitName='Concluir edição' handleSubmit={handleEditSubmit}/>
-                        : <ProjectInfo budget={project.budget} category={project.category ? project.category.name : ''}/>
+                        : <ProjectInfo projectData={project}/>
 
                 }
 
