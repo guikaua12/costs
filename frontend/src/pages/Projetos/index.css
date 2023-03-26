@@ -3,11 +3,12 @@
     flex-wrap: wrap;
     justify-content: flex-start;
     height: 100%;
-    margin: 20px;
 
-    background-color: #DBBB33;
+    /*background-color: #DBBB33;*/
 }
 
 .projects-container .project-card {
     margin: 10px;
+    min-width: 200px;
+    width: calc(100% / 5);
 }
