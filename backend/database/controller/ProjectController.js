@@ -228,7 +228,6 @@ async function addService(req, res) {
     }
 }
 
-
 async function deleteProject(req, res) {
     const {id} = req.params;
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -260,6 +259,38 @@ async function deleteProject(req, res) {
     }
 }
 
+async function deleteService(req, res) {
+    const {id, serviceId} = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id) || !mongoose.Types.ObjectId.isValid(serviceId)) {
+        return res.status(422).json({
+            erro: true,
+            msg: 'O id é inválido.'
+        });
+    }
+
+    try {
+        const project = await ProjectModel.findByIdAndUpdate(id, { $pull: { services: {_id: serviceId} } }, { new: true })
+            .where({owner: req.user._id});
+        if(!project) {
+            return res.status(404).json({
+                erro: true,
+                msg: 'Projeto não encontrado.'
+            });
+        }
+        return res.status(200).json({
+            erro: false,
+            msg: 'Serviço deletado com sucesso.',
+            services: project.services
+        });
+    }catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            erro: true,
+            msg: 'Ocorreu um erro interno.'
+        });
+    }
+}
+
 
 
 
@@ -270,5 +301,6 @@ module.exports = {
     getOne,
     updateOne,
     addService,
-    deleteProject
+    deleteProject,
+    deleteService
 }
