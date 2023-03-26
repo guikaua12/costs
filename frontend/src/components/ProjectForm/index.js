@@ -51,7 +51,8 @@ ProjectForm.defaultProps = {
         budget: 0,
         category: {
             id: 0
-        }
+        },
+        services: []
     }
 }
 
