@@ -12,6 +12,10 @@
     text-decoration: none;
 }
 
+.action-link svg {
+    margin: 0 5px 0 5px;
+}
+
 .action-link:hover {
     color: #DBBB33;
     background-color: black;

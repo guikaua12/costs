@@ -12,6 +12,10 @@
     text-decoration: none;
 }
 
+.action-button svg {
+    margin: 0 5px 0 5px;
+}
+
 .action-button:hover {
     color: #DBBB33;
     background-color: black;
