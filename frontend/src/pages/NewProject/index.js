@@ -2,21 +2,48 @@ import React, {useState} from 'react';
 import './index.css';
 import Page from '../../components/Page';
 import ProjectForm from '../../components/ProjectForm';
+import useAuth from '../../auth/useAuth';
+import { useNavigate } from 'react-router-dom';
+import Message from '../../components/Message';
 
 function NewProject() {
-    const [name, setName] = useState('');
-    const [budget, setBudget] = useState(0);
-    const [category, setCategory] = useState('');
+    const auth = useAuth();
+    const navigate = useNavigate();
+    async function handleSubmit(project) {
+        createProject(project)
+            .then(response => response.json())
+            .then(data => {
+                if(data.erro) {
+                    return;
+                }
+                navigate('/projects', {
+                    state: {
+                        message: {
+                            type: 'success',
+                            msg: data.msg
+                        }
+                    }
+                });
+            })
+            .catch(err => console.log(err));
+    }
 
-    async function handleSubmit(e) {
-        if (!name || (!budget || isNaN(budget) || budget < 0) || !category) return;
+    function createProject(project) {
+        const headers = {
+            'Content-Type': 'application/json',
+            authorization: `Bearer ${auth.getToken()}`
+        };
+        const body = {
+            name: project.name,
+            budget: Number(project.budget),
+            category: Number(project.category)
+        };
 
-        const request = await fetch('/projects/new', {
+        return fetch(`/projects/new`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
+            headers,
+            body: JSON.stringify(body)
+        });
     }
 
     return (
@@ -25,14 +52,10 @@ function NewProject() {
             style: {
                 maxWidth: '350px'
             }}}>
-            <div>{category}</div>
 
             <div className="new-project-container">
                 <p>Crie seu projeto para depois adicionar os serviços</p>
-                <ProjectForm handleSubmit={handleSubmit} submitName='Criar Projeto'
-                     handleNameChange={e => setName(e.target.value)}
-                     handleBudgetChange={e => setBudget(e.target.value)}
-                     handleCategoryChange={e => setCategory(e.target.value)}></ProjectForm>
+                <ProjectForm handleSubmit={handleSubmit} submitName='Criar Projeto'></ProjectForm>
             </div>
         </Page>
     );
