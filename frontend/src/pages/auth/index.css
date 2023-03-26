@@ -23,23 +23,6 @@
     margin-bottom: 15px;
 }
 
-.login-wrapper form.login-form .alert {
-    padding: 10px;
-    display: none;
-}
-
-.login-wrapper form.login-form .alert.error {
-    display: block;
-    background-color: #F8D7DA;
-    color: #842053;
-}
-
-.login-wrapper form.login-form .alert.success {
-    display: block;
-    background-color: #D1E7DD;
-    color: #52704A;
-}
-
 .login-wrapper form.login-form .a-wrapper {
     margin: 15px 0 0 0;
 }

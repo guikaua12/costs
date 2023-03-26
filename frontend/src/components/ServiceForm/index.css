@@ -1,0 +1,8 @@
+form.project-form {
+    display: flex;
+    flex-direction: column;
+}
+
+form.project-form > * {
+    margin-bottom: 10px;
+}

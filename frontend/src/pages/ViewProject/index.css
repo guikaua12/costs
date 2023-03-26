@@ -19,10 +19,14 @@
 }
 
 .project-container h1.project-name {
-    font-size: 20px;
     color: #FFBB33;
     padding: 10px;
     background-color: #222222;
+    font-size: 2em;
+}
+
+.project-container h1 {
+    font-size: 24px;
 }
 
 .project-container .add-service-container {
