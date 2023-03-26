@@ -5,6 +5,7 @@
     border-radius: 4px;
     padding: 15px;
     color: #7A7A7A;
+    flex-grow: 1;
 }
 
 .project-card h1.card-title {
