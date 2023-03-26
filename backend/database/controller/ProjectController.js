@@ -239,6 +239,7 @@ async function deleteProject(req, res) {
 
     try {
         const project = await ProjectModel.findByIdAndDelete(id).where({owner: req.user._id});
+        console.log(project);
         if(!project) {
             return res.status(404).json({
                 erro: true,
