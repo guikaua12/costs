@@ -8,6 +8,7 @@ import ProjectForm from '../../components/ProjectForm';
 import ServiceForm from '../../components/ServiceForm';
 import Loading from '../../components/Loading';
 import Message from '../../components/Message';
+import ServiceCard from '../../components/ServiceCard';
 
 function ProjectInfo({projectData}) {
     return (
@@ -30,6 +31,7 @@ function ViewProject() {
     const {id} = useParams();
 
     const [project, setProject] = useState({});
+    const [services, setServices] = useState([]);
     const [loading, setLoading] = useState(true);
 
     // project form (edit project)
@@ -49,10 +51,12 @@ function ViewProject() {
         fetch(`/projects/${id}`, {
             headers
         }).then(response => response.json())
-            .then(response => {
+            .then(data => {
                 setLoading(false);
-                if(!response.erro)
-                    setProject(response.project);
+                if(!data.erro) {
+                    setProject(data.project);
+                    setServices(data.project.services);
+                }
             }).catch(err => console.log(err));
 
     }, []);
@@ -93,7 +97,6 @@ function ViewProject() {
         });
     }
 
-
     function handleEditSubmit(project) {
         setIsEditing(false);
         updateProject(project)
@@ -114,10 +117,11 @@ function ViewProject() {
                     type: data.erro ? 'error' : 'success',
                     msg: data.msg
                 });
+                console.log(data.services);
+                setServices(data.services);
                 setServiceIsEditing(false);
             })
             .catch(err => console.log(err));
-        // exibir mensagem
     }
 
     return (
@@ -136,14 +140,12 @@ function ViewProject() {
                                 <h1 className='project-name'>Projeto: {project.name}</h1>
                                 <Button onClick={() => setIsEditing(!isEditing)}>{isEditing ? 'Fechar' : 'Editar'}</Button>
                             </div>
-
                             {
                                 isEditing ?
                                     <ProjectForm projectData={project} submitName='Concluir edição' handleSubmit={handleEditSubmit}/>
                                     : <ProjectInfo projectData={project}/>
 
                             }
-
                             <div className="add-service-container">
                                 <div className="wrapper1">
                                     <h1>Adicione um serviço:</h1>
@@ -151,6 +153,16 @@ function ViewProject() {
                                 </div>
                                 {
                                     serviceIsEditing && <ServiceForm handleSubmit={handleAddServiceSubmit}/>
+                                }
+                            </div>
+
+                            <h1>Serviços:</h1>
+                            <div className="services-container">
+                                {
+                                    services.map(service => <ServiceCard id={service._id}
+                                                                                 name={service.name}
+                                                                                 cost={service.cost}
+                                                                                 description={service.description}/>)
                                 }
                             </div>
                         </>
