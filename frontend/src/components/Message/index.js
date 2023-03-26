@@ -8,6 +8,7 @@ function Message({type, msg, delay = 4000}) {
     });
 
     useEffect(() => {
+        if(delay < 0) return;
         setTimeout(() => {
             setMessage(undefined);
         }, delay);
