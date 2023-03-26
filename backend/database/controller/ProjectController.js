@@ -206,7 +206,7 @@ async function addService(req, res) {
     }
 
     try {
-        const project = await ProjectModel.findByIdAndUpdate(id, { $push: { services: {name, cost, description} } })
+        const project = await ProjectModel.findByIdAndUpdate(id, { $push: { services: {name, cost, description} } }, { new: true })
             .where({owner: req.user._id});
         if(!project) {
             return res.status(404).json({
@@ -216,7 +216,8 @@ async function addService(req, res) {
         }
         return res.status(200).json({
             erro: false,
-            msg: 'Serviço criado com sucesso.'
+            msg: 'Serviço criado com sucesso.',
+            services: project.services
         });
     }catch (err) {
         console.log(err);
