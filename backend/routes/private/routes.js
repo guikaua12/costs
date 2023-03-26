@@ -11,6 +11,7 @@ router.get('/projects/categories', validateToken, ProjectController.getAllCatego
 router.get('/projects/:id', validateToken, ProjectController.getOne);
 router.patch('/projects/:id', validateToken, ProjectController.updateOne);
 router.post('/projects/:id/services/new', validateToken, ProjectController.addService);
+router.delete('/projects/:id', validateToken, ProjectController.deleteProject);
 // router.get('/projects/:id/services/:serviceId', validateToken, ProjectController.updateOne);
 
 // token

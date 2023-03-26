@@ -228,6 +228,38 @@ async function addService(req, res) {
 }
 
 
+async function deleteProject(req, res) {
+    const {id} = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(422).json({
+            erro: true,
+            msg: 'O id é inválido.'
+        });
+    }
+
+    try {
+        const project = await ProjectModel.findByIdAndDelete(id).where({owner: req.user._id});
+        if(!project) {
+            return res.status(404).json({
+                erro: true,
+                msg: "Projeto não encontrado."
+            });
+        }
+        res.status(200).json({
+            erro: false,
+            msg: "Projeto deletado com sucesso."
+        });
+    }catch(err) {
+        console.log(err);
+        res.status(500).json({
+            erro: true,
+            msg: 'Ocorreu um erro interno.'
+        });
+    }
+}
+
+
+
 
 module.exports = {
     create,
@@ -235,5 +267,6 @@ module.exports = {
     getAllCategories,
     getOne,
     updateOne,
-    addService
+    addService,
+    deleteProject
 }
