@@ -7,6 +7,10 @@
     /*background-color: #DBBB33;*/
 }
 
+.project-container .alert {
+    margin-bottom: 20px;
+}
+
 .project-container .wrapper1 {
     display: flex;
     justify-content: space-between;
@@ -34,6 +38,18 @@
     border-top: 1px solid black;
     border-bottom: 1px solid black;
     padding: 25px 0 25px 0;
+    margin: 20px 0 20px 0;
+}
+
+.project-container .services-container {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.project-container .services-container .service-card {
+    width: calc(100% / 5);
+    margin: 5px;
 }
 
 
@@ -46,4 +62,3 @@
     font-size: 1.1rem;
     font-weight: bold;
 }
-
