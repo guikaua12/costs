@@ -5,7 +5,9 @@ import useAuth from '../../auth/useAuth';
 import {useParams} from 'react-router-dom';
 import Button from '../../components/Button';
 import ProjectForm from '../../components/ProjectForm';
+import ServiceForm from '../../components/ServiceForm';
 import Loading from '../../components/Loading';
+import Message from '../../components/Message';
 
 function ProjectInfo({projectData}) {
     return (
@@ -34,6 +36,9 @@ function ViewProject() {
     const [isEditing, setIsEditing] = useState(false);
     // project form (add service)
     const [serviceIsEditing, setServiceIsEditing] = useState(false);
+
+    // message
+    const [message, setMessage] = useState();
 
     useEffect(() => {
         // fetch project data
@@ -70,8 +75,22 @@ function ViewProject() {
         });
     }
 
-    function addService(project) {
+    function addService(service) {
+        const headers = {
+            'Content-Type': 'application/json',
+            authorization: `Bearer ${auth.getToken()}`
+        };
+        const body = {
+            name: service.name,
+            cost: Number(service.cost),
+            description: service.description
+        };
 
+        return fetch(`/projects/${id}/services/new`, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify(body)
+        });
     }
 
 
@@ -87,8 +106,17 @@ function ViewProject() {
         // exibir mensagem
     }
 
-    function handleAddServiceSubmit(project) {
-        setServiceIsEditing(false);
+    function handleAddServiceSubmit(service) {
+        addService(service)
+            .then(response => response.json())
+            .then(data => {
+                setMessage({
+                    type: data.erro ? 'error' : 'success',
+                    msg: data.msg
+                });
+                setServiceIsEditing(false);
+            })
+            .catch(err => console.log(err));
         // exibir mensagem
     }
 
@@ -101,6 +129,9 @@ function ViewProject() {
                 {
                     !loading && (
                         <>
+                            {
+                                message && <Message type={message.type} msg={message.msg}></Message>
+                            }
                             <div className="wrapper1">
                                 <h1 className='project-name'>Projeto: {project.name}</h1>
                                 <Button onClick={() => setIsEditing(!isEditing)}>{isEditing ? 'Fechar' : 'Editar'}</Button>
@@ -119,7 +150,7 @@ function ViewProject() {
                                     <Button onClick={() => setServiceIsEditing(!serviceIsEditing)}>{serviceIsEditing ? 'Fechar' : 'Adicionar Serviço'}</Button>
                                 </div>
                                 {
-                                    serviceIsEditing && <ProjectForm submitName='Concluir edição' handleSubmit={handleAddServiceSubmit}/>
+                                    serviceIsEditing && <ServiceForm handleSubmit={handleAddServiceSubmit}/>
                                 }
                             </div>
                         </>
