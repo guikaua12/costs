@@ -97,6 +97,17 @@ function ViewProject() {
         });
     }
 
+    function deleteService(serviceId) {
+        const headers = {
+            authorization: `Bearer ${auth.getToken()}`
+        };
+
+        return fetch(`/projects/${id}/services/${serviceId}`, {
+            method: 'DELETE',
+            headers
+        });
+    }
+
     function handleEditSubmit(project) {
         setIsEditing(false);
         updateProject(project)
@@ -117,9 +128,21 @@ function ViewProject() {
                     type: data.erro ? 'error' : 'success',
                     msg: data.msg
                 });
-                console.log(data.services);
                 setServices(data.services);
                 setServiceIsEditing(false);
+            })
+            .catch(err => console.log(err));
+    }
+
+    function handleDeleteServiceSubmit(serviceId) {
+        deleteService(serviceId)
+            .then(response => response.json())
+            .then(data => {
+                setMessage({
+                    type: data.erro ? 'error' : 'success',
+                    msg: data.msg
+                });
+                setServices(data.services);
             })
             .catch(err => console.log(err));
     }
@@ -163,7 +186,8 @@ function ViewProject() {
                                                                          id={service._id}
                                                                          name={service.name}
                                                                          cost={service.cost}
-                                                                         description={service.description}/>)
+                                                                         description={service.description}
+                                                                         handleDelete={handleDeleteServiceSubmit}/>)
                                 }
                             </div>
                         </>
