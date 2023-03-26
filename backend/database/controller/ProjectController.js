@@ -182,10 +182,58 @@ async function updateOne(req, res) {
     }
 }
 
+async function addService(req, res) {
+    const {id} = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(422).json({
+            erro: true,
+            msg: 'O id é inválido.'
+        });
+    }
+
+    const {name, cost, description} = req.body;
+    if(!name || !cost || !description) {
+        return res.status(422).json({
+            erro: true,
+            msg: 'O name, cost e description não podem ser vazios.'
+        });
+    }
+    if(typeof name !== 'string' || typeof cost !== 'number' || typeof description !== 'string') {
+        return res.status(422).json({
+            erro: true,
+            msg: 'O nome, cost ou description são inválidos.'
+        });
+    }
+
+    try {
+        const project = await ProjectModel.findByIdAndUpdate(id, { $push: { services: {name, cost, description} } })
+            .where({owner: req.user._id});
+        if(!project) {
+            return res.status(404).json({
+                erro: true,
+                msg: 'Projeto não encontrado.'
+            });
+        }
+        return res.status(200).json({
+            erro: false,
+            msg: 'Serviço criado com sucesso.'
+        });
+    }catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            erro: true,
+            msg: 'Ocorreu um erro interno.'
+        });
+    }
+}
+
+
+
 module.exports = {
     create,
     getAllByToken,
     getAllCategories,
     getOne,
-    updateOne
+    updateOne,
+    addService
 }

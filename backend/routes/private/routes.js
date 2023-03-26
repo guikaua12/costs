@@ -10,6 +10,10 @@ router.get('/projects/all', validateToken, ProjectController.getAllByToken);
 router.get('/projects/categories', validateToken, ProjectController.getAllCategories);
 router.get('/projects/:id', validateToken, ProjectController.getOne);
 router.patch('/projects/:id', validateToken, ProjectController.updateOne);
+router.post('/projects/:id/services/new', validateToken, ProjectController.addService);
+// router.get('/projects/:id/services/:serviceId', validateToken, ProjectController.updateOne);
+
+// token
 router.get('/auth/validatetoken', validateToken, (req, res) => res.status(200).json({erro: false}));
 
 
