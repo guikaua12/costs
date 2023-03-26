@@ -1,0 +1,38 @@
+.service-card {
+    width: 250px;
+    height: 200px;
+    outline: 1px solid black;
+    border-radius: 4px;
+    padding: 15px;
+    color: #7A7A7A;
+}
+
+.service-card h1.card-title {
+    font-size: 20px;
+    color: #FFBB33;
+    padding: 10px;
+    background-color: #222222;
+    margin-bottom: 25px;
+}
+
+.service-card span.budget {
+    font-size: 1rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+
+.service-card .type {
+    display: block;
+    margin-top: 15px;
+    font-size: 1.15rem;
+    margin-bottom: 20px;
+}
+
+.service-card .action-wrapper {
+    display: flex;
+}
+
+.service-card .action-wrapper > * {
+    margin-right: 15px;
+}
