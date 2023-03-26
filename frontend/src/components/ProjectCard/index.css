@@ -1,6 +1,5 @@
 .project-card {
     width: 250px;
-    height: 200px;
     outline: 1px solid black;
     border-radius: 4px;
     padding: 15px;
@@ -13,6 +12,7 @@
     padding: 10px;
     background-color: #222222;
     margin-bottom: 25px;
+    overflow-wrap: break-word;
 }
 
 .project-card span.budget {
