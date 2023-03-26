@@ -159,10 +159,11 @@ function ViewProject() {
                             <h1>Serviços:</h1>
                             <div className="services-container">
                                 {
-                                    services.map(service => <ServiceCard id={service._id}
-                                                                                 name={service.name}
-                                                                                 cost={service.cost}
-                                                                                 description={service.description}/>)
+                                    services.map(service => <ServiceCard key={service._id}
+                                                                         id={service._id}
+                                                                         name={service.name}
+                                                                         cost={service.cost}
+                                                                         description={service.description}/>)
                                 }
                             </div>
                         </>
