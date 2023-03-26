@@ -1,0 +1,16 @@
+.alert {
+    padding: 10px;
+    display: none;
+}
+
+.alert.error {
+    display: block;
+    background-color: #F8D7DA;
+    color: #842053;
+}
+
+.alert.success {
+    display: block;
+    background-color: #D1E7DD;
+    color: #52704A;
+}
