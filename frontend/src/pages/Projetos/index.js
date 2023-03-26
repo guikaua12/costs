@@ -5,13 +5,16 @@ import ProjectCard from '../../components/ProjectCard';
 import useAuth from '../../auth/useAuth';
 import {useLocation} from 'react-router-dom';
 import Message from '../../components/Message';
+import Loading from '../../components/Loading';
 
 function Projetos() {
     const auth = useAuth();
     const location = useLocation();
-    const [message, setMessage] = useState(location.state ? location.state.message : undefined);
 
     const [projects, setProjects] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    const [message, setMessage] = useState(location.state ? location.state.message : undefined);
 
     useEffect(() => {
         const headers = {
@@ -22,6 +25,7 @@ function Projetos() {
             headers
         }).then(response => response.json())
             .then(response => {
+                setLoading(false);
                 if(response.erro) return;
                 setProjects(response.projects);
             })
@@ -58,6 +62,9 @@ function Projetos() {
         <Page title='Projetos' containerProps={{className: 'align-center justify-center block'}} currentPage='projetos'>
             {
                 message && <Message type='success' msg={message.msg}></Message>
+            }
+            {
+                loading && <Loading></Loading>
             }
             <div className='projects-container'>
                 {

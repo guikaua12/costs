@@ -5,6 +5,7 @@ import useAuth from '../../auth/useAuth';
 import {useParams} from 'react-router-dom';
 import Button from '../../components/Button';
 import ProjectForm from '../../components/ProjectForm';
+import Loading from '../../components/Loading';
 
 function ProjectInfo({projectData}) {
     return (
@@ -94,28 +95,36 @@ function ViewProject() {
     return (
         <Page containerProps={{className: 'align-center justify-center block'}}>
             <div className='project-container'>
-
-                <div className="wrapper1">
-                    <h1 className='project-name'>Projeto: {project.name}</h1>
-                    <Button onClick={() => setIsEditing(!isEditing)}>{isEditing ? 'Fechar' : 'Editar'}</Button>
-                </div>
-
                 {
-                    isEditing ?
-                        <ProjectForm projectData={project} submitName='Concluir edição' handleSubmit={handleEditSubmit}/>
-                        : <ProjectInfo projectData={project}/>
-
+                    loading && <Loading></Loading>
                 }
+                {
+                    !loading && (
+                        <>
+                            <div className="wrapper1">
+                                <h1 className='project-name'>Projeto: {project.name}</h1>
+                                <Button onClick={() => setIsEditing(!isEditing)}>{isEditing ? 'Fechar' : 'Editar'}</Button>
+                            </div>
 
-                <div className="add-service-container">
-                    <div className="wrapper1">
-                        <h1>Adicione um serviço:</h1>
-                        <Button onClick={() => setServiceIsEditing(!serviceIsEditing)}>{serviceIsEditing ? 'Fechar' : 'Adicionar Serviço'}</Button>
-                    </div>
-                    {
-                        serviceIsEditing && <ProjectForm submitName='Concluir edição' handleSubmit={handleAddServiceSubmit}/>
-                    }
-                </div>
+                            {
+                                isEditing ?
+                                    <ProjectForm projectData={project} submitName='Concluir edição' handleSubmit={handleEditSubmit}/>
+                                    : <ProjectInfo projectData={project}/>
+
+                            }
+
+                            <div className="add-service-container">
+                                <div className="wrapper1">
+                                    <h1>Adicione um serviço:</h1>
+                                    <Button onClick={() => setServiceIsEditing(!serviceIsEditing)}>{serviceIsEditing ? 'Fechar' : 'Adicionar Serviço'}</Button>
+                                </div>
+                                {
+                                    serviceIsEditing && <ProjectForm submitName='Concluir edição' handleSubmit={handleAddServiceSubmit}/>
+                                }
+                            </div>
+                        </>
+                    )
+                }
             </div>
         </Page>
     );
