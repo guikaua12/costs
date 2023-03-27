@@ -2,22 +2,25 @@ import React, {useEffect, useState} from 'react';
 import './index.css';
 
 function Message({type, msg, delay = 4000}) {
-    const [message, setMessage] = useState({
-        type,
-        msg
-    });
+    const [show, setShow] = useState(false);
 
     useEffect(() => {
         if(delay < 0) return;
-        setTimeout(() => {
-            setMessage(undefined);
+
+        setShow(true);
+
+        const task = setTimeout(() => {
+            setShow(false);
         }, delay);
-    }, []);
+
+        return () => clearTimeout(task);
+    }, [msg]);
+
 
     return (
-        message && <div className={`alert ${message.type}`}>
+        show && <div className={`alert ${type}`}>
             {
-                message.msg
+                msg
             }
         </div>
     );
