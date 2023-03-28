@@ -206,7 +206,7 @@ async function addService(req, res) {
     }
 
     try {
-        const project = await ProjectModel.findByIdAndUpdate(id, { $push: { services: {name, cost, description} } }, { new: true })
+        let project = await ProjectModel.findByIdAndUpdate(id, { $push: { services: {name, cost, description} } , $inc: { cost }}, { new: true })
             .where({owner: req.user._id});
         if(!project) {
             return res.status(404).json({
@@ -214,10 +214,16 @@ async function addService(req, res) {
                 msg: 'Projeto não encontrado.'
             });
         }
+
+        project = {
+            ...project.toObject(),
+            category: categories.find(cat => cat.id === project.category)
+        };
+
         return res.status(200).json({
             erro: false,
             msg: 'Serviço criado com sucesso.',
-            services: project.services
+            project
         });
     }catch (err) {
         console.log(err);
@@ -239,7 +245,6 @@ async function deleteProject(req, res) {
 
     try {
         const project = await ProjectModel.findByIdAndDelete(id).where({owner: req.user._id});
-        console.log(project);
         if(!project) {
             return res.status(404).json({
                 erro: true,
@@ -269,7 +274,7 @@ async function deleteService(req, res) {
     }
 
     try {
-        const project = await ProjectModel.findByIdAndUpdate(id, { $pull: { services: {_id: serviceId} } }, { new: true })
+        const project = await ProjectModel.findById(id)
             .where({owner: req.user._id});
         if(!project) {
             return res.status(404).json({
@@ -277,10 +282,26 @@ async function deleteService(req, res) {
                 msg: 'Projeto não encontrado.'
             });
         }
+
+        const service = project.services.find(project => project._id.toString() === serviceId);
+        if(!service) {
+            return res.status(404).json({
+                erro: true,
+                msg: 'Serviço não encontrado.'
+            });
+        }
+        let updatedProject = await ProjectModel.findByIdAndUpdate(id, { $pull: { services: {_id: serviceId} }, $inc: { cost: -service.cost } }, {new: true})
+            .where({owner: req.user._id});
+        updatedProject = {
+            ...updatedProject.toObject(),
+            category: categories.find(cat => cat.id === project.category)
+        };
+
+
         return res.status(200).json({
             erro: false,
             msg: 'Serviço deletado com sucesso.',
-            services: project.services
+            project: updatedProject
         });
     }catch (err) {
         console.log(err);
