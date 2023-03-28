@@ -69,7 +69,7 @@ function ViewProject() {
         const body = {
             name: project.name,
             budget: Number(project.budget),
-            category: Number(project.category)
+            category: Number(project.category.id ? project.category.id : project.category)
         };
 
         return fetch(`/projects/${id}`, {
@@ -109,18 +109,31 @@ function ViewProject() {
     }
 
     function handleEditSubmit(project) {
-        setIsEditing(false);
+        console.log(project);
+        if(Number(project.budget) < Number(project.cost)) {
+            console.log('awdawdaw');
+            setMessage({
+                type: 'error',
+                msg: 'O orçamento não pode ser menor do que o custo.',
+                delay: 0
+            });
+            return;
+        }
+
         updateProject(project)
             .then(response => response.json())
             .then(data => {
-                if(data.erro) {
-                    console.log(data.msg);
-                    return;
-                }
-                setProject(project)
-            });
+                setMessage({
+                    type: data.erro ? 'error' : 'success',
+                    msg: data.msg,
+                    delay: data.erro ? 0 : 4000
+                });
 
-        // exibir mensagem
+                if(data.erro) return;
+
+                setIsEditing(false);
+                setProject(data.project);
+            });
     }
 
     function handleAddServiceSubmit(service) {
@@ -138,8 +151,12 @@ function ViewProject() {
             .then(data => {
                 setMessage({
                     type: data.erro ? 'error' : 'success',
-                    msg: data.msg
+                    msg: data.msg,
+                    delay: data.erro ? 0 : 4000
                 });
+
+                if(data.erro) return;
+
                 setProject(data.project);
                 setServices(data.project.services);
                 setServiceIsEditing(false);
@@ -153,8 +170,12 @@ function ViewProject() {
             .then(data => {
                 setMessage({
                     type: data.erro ? 'error' : 'success',
-                    msg: data.msg
+                    msg: data.msg,
+                    delay: data.erro ? 0 : 4000
                 });
+
+                if(data.erro) return;
+
                 setProject(data.project);
                 setServices(data.project.services);
             })
