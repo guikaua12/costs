@@ -160,18 +160,33 @@ async function updateOne(req, res) {
         });
     }
 
-
     try {
-        const project = await ProjectModel.findByIdAndUpdate(id, {name, budget, category}).where({owner: req.user._id});
+        let project = await ProjectModel.findByIdAndUpdate(id, { $set: { name, budget, category } }, {new: true})
+            .where({owner: req.user._id});
         if(!project) {
             return res.status(404).json({
                 erro: true,
                 msg: 'Projeto não encontrado.'
             });
         }
+
+        if(budget < project.cost) {
+            return res.status(422).json({
+                erro: true,
+                msg: 'O orçamento não pode ser menor do que o custo.'
+            });
+        }
+
+        project = {
+            ...project.toObject(),
+            category: categories.find(cat => cat.id === project.category)
+        };
+
+
         return res.status(200).json({
             erro: false,
-            msg: 'Projeto atualizado com sucesso.'
+            msg: 'Projeto atualizado com sucesso.',
+            project
         });
     }catch (err) {
         console.log(err);
