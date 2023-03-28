@@ -5,7 +5,10 @@ function Message({type, msg, delay = 4000}) {
     const [show, setShow] = useState(false);
 
     useEffect(() => {
+        if(!type || !msg) return;
+
         setShow(true);
+
         if(delay <= 0) return;
 
         const task = setTimeout(() => {
