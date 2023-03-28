@@ -5,7 +5,8 @@ const ProjectModel = mongoose.model('Project', {
     name: String,
     budget: Number,
     category: Number,
-    services: [{ name: String, cost: Number, description: String }]
+    services: [{ name: String, cost: Number, description: String }],
+    cost: Number
 });
 
 module.exports = ProjectModel;
