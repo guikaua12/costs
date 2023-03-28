@@ -20,7 +20,7 @@ function ProjectInfo({projectData}) {
                 <span className='project-info'>Total do orçamento: </span><span>R${projectData.budget}</span>
             </div>
             <div>
-                <span className='project-info'>Total utilizado: </span><span>N/A</span>
+                <span className='project-info'>Total utilizado: </span><span>R${projectData.cost}</span>
             </div>
         </div>
     );
@@ -69,7 +69,7 @@ function ViewProject() {
         const body = {
             name: project.name,
             budget: Number(project.budget),
-            category: Number(project.category.id)
+            category: Number(project.category)
         };
 
         return fetch(`/projects/${id}`, {
@@ -113,7 +113,10 @@ function ViewProject() {
         updateProject(project)
             .then(response => response.json())
             .then(data => {
-                if(data.erro) return;
+                if(data.erro) {
+                    console.log(data.msg);
+                    return;
+                }
                 setProject(project)
             });
 
@@ -121,6 +124,15 @@ function ViewProject() {
     }
 
     function handleAddServiceSubmit(service) {
+        if(Number(project.cost)+Number(service.cost) > Number(project.budget)) {
+            setMessage({
+                type: 'error',
+                msg: 'O custo não pode exceder o orçamento do projeto.',
+                delay: 0
+            });
+            return;
+        }
+
         addService(service)
             .then(response => response.json())
             .then(data => {
@@ -128,7 +140,8 @@ function ViewProject() {
                     type: data.erro ? 'error' : 'success',
                     msg: data.msg
                 });
-                setServices(data.services);
+                setProject(data.project);
+                setServices(data.project.services);
                 setServiceIsEditing(false);
             })
             .catch(err => console.log(err));
@@ -142,7 +155,8 @@ function ViewProject() {
                     type: data.erro ? 'error' : 'success',
                     msg: data.msg
                 });
-                setServices(data.services);
+                setProject(data.project);
+                setServices(data.project.services);
             })
             .catch(err => console.log(err));
     }
@@ -157,7 +171,7 @@ function ViewProject() {
                     !loading && (
                         <>
                             {
-                                message && <Message type={message.type} msg={message.msg}></Message>
+                                message && <Message type={message.type} msg={message.msg} delay={message.delay && message.delay}></Message>
                             }
                             <div className="wrapper1">
                                 <h1 className='project-name'>Projeto: {project.name}</h1>
