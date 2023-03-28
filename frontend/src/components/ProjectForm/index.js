@@ -32,7 +32,6 @@ function ProjectForm({projectData, handleSubmit, className, submitName}) {
     return (
         <form className={`project-form ${className}`} action="#" onSubmit={e => {
             e.preventDefault();
-            console.log(project);
             handleSubmit(project);
         }}>
             <Input id='project-name' name='name' label='Nome do projeto:' placeholder='Insira o nome do projeto' value={project.name} onChange={handleChange}/>
