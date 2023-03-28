@@ -30,7 +30,11 @@ function ProjectForm({projectData, handleSubmit, className, submitName}) {
     }
 
     return (
-        <form className={`project-form ${className}`} action="#" onSubmit={e => [e.preventDefault(), handleSubmit(project)]}>
+        <form className={`project-form ${className}`} action="#" onSubmit={e => {
+            e.preventDefault();
+            console.log(project);
+            handleSubmit(project);
+        }}>
             <Input id='project-name' name='name' label='Nome do projeto:' placeholder='Insira o nome do projeto' value={project.name} onChange={handleChange}/>
             <Input id='project-orçamento' name='budget' label='Orçamento do projeto:' placeholder='Insira o orçamento total' value={project.budget} type='number' onChange={handleChange}/>
             <Select id='project-category' name='category' label='Selecione a categoria:' placeholder='Selecione uma opção' value={project.category.id} onChange={handleChange}>
