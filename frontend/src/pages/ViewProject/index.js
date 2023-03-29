@@ -31,7 +31,6 @@ function ViewProject() {
     const {id} = useParams();
 
     const [project, setProject] = useState({});
-    const [services, setServices] = useState([]);
     const [loading, setLoading] = useState(true);
 
     // project form (edit project)
@@ -55,7 +54,6 @@ function ViewProject() {
                 setLoading(false);
                 if(!data.erro) {
                     setProject(data.project);
-                    setServices(data.project.services);
                 }
             }).catch(err => console.log(err));
 
@@ -158,7 +156,6 @@ function ViewProject() {
                 if(data.erro) return;
 
                 setProject(data.project);
-                setServices(data.project.services);
                 setServiceIsEditing(false);
             })
             .catch(err => console.log(err));
@@ -177,7 +174,6 @@ function ViewProject() {
                 if(data.erro) return;
 
                 setProject(data.project);
-                setServices(data.project.services);
             })
             .catch(err => console.log(err));
     }
@@ -217,7 +213,7 @@ function ViewProject() {
                             <h1>Serviços:</h1>
                             <div className="services-container">
                                 {
-                                    services.map(service => <ServiceCard key={service._id}
+                                    project.services.map(service => <ServiceCard key={service._id}
                                                                          id={service._id}
                                                                          name={service.name}
                                                                          cost={service.cost}
