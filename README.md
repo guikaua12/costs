@@ -10,4 +10,4 @@ O backend foi feito usando Express e Mongo como banco de dados.
 <img src="https://i.imgur.com/0Ifpe4L.gif" width="900px">
 
 ## Editar projeto
-<img src="https://i.imgur.com/7IN3ZNe.gif" width="900px">
+<img src="https://i.imgur.com/wyeGKs7.gif" width="900px">
